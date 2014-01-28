@@ -12,13 +12,14 @@ public class Zed {
 	private int width;
 	private int height;
 	private Image image;
-	public Zed() {
+	public Zed(int x, int y) {
 		ImageIcon obraz = new ImageIcon(this.getClass().getResource(obr));
 		image = obraz.getImage();
 		width = image.getWidth(null);
 		height = image.getHeight(null);
-		x = 384;
-		y = 284;
+		this.x = x;
+		this.y = y;
+		
 	}
 	public int getX() {
 		return x;
