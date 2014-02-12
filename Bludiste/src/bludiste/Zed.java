@@ -7,12 +7,12 @@ import javax.swing.ImageIcon;
 
 public class Zed {
 	private String obr = "/zed.png";
-	private float x;
-	private float y;
+	private int x;
+	private int y;
 	private int width;
 	private int height;
 	private Image image;
-	public Zed(float x, float y) {
+	public Zed(int x, int y) {
 		ImageIcon obraz = new ImageIcon(this.getClass().getResource(obr));
 		image = obraz.getImage();
 		width = image.getWidth(null);
@@ -31,7 +31,7 @@ public class Zed {
 		return image;
 	}
 	public Rectangle getBounds(){
-		return new Rectangle((int)x, (int)y, width, height);
+		return new Rectangle(x, y, width, height);
 	}
 	public int getWidth(){
 		return width;

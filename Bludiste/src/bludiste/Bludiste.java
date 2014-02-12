@@ -16,14 +16,14 @@ public class Bludiste extends JFrame {
                 Dimension dim = new Dimension(Toolkit.getDefaultToolkit().getScreenSize());
                 System.out.println(dim.getHeight());
 				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				setSize(800,600);
+				setSize(800,608);
                 setVisible(true);
                 setResizable(false);
                 setLocationRelativeTo(null);
                 setTitle("Labyrint");
         }
 
-        public static void main(String[] args) {
+        public static void main(String[] args) throws Exception {
                 new Bludiste();
         }
 }

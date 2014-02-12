@@ -21,8 +21,8 @@ public class Player {
 		image = ii.getImage();
 		width = image.getWidth(null);
 		height = image.getHeight(null);
-		x = 60;
-		y = 10;
+		x = 40;
+		y = 40;
 	}
 
 	public void move() {
