@@ -1,162 +1,148 @@
 package bludiste;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+
 import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 
-import javax.swing.JPanel;
-import javax.swing.Timer;
 
-public class Board extends JPanel implements ActionListener {
-	/**
-         * 
-         */
-	private static final long serialVersionUID = 1L;
-	private Timer timer;
+public class Board {
+	
 	private Player player;
-	private ArrayList<Zed> zdi;
-	public static Dimension d;
-	Color pozadi = new Color(199, 199, 199);
-	private String[] level = null;
-	private Exit exit;
-	private int levels = 1;
 	private Reader in;
 	private BufferedReader br;
-	private int int_symbol;
-	private char symbol;
+	private String line;
 	private ArrayList<String> lines = new ArrayList<String>();
-
+	// private ArrayList<Enemy> enemies;
+	private int levels = 1;
+	private Exit exit;
+	private ArrayList<Zed> zdi;
 	public Board() {
-		addKeyListener(new TAdapter());
-		setFocusable(true);
-		setBackground(pozadi);
-		setDoubleBuffered(true);
+		
 		player = new Player();
 		levels();
-		d = new Dimension(Toolkit.getDefaultToolkit().getScreenSize());
-		timer = new Timer(5, this);
-		timer.start();
+		
 	}
 
-	private void levels() {
-		try {
-			if (levels < 3) {
-				in = new InputStreamReader(this.getClass().getResourceAsStream(
-						"/level" + levels + ".txt"));
-				br = new BufferedReader(in);
-				while ((int_symbol = br.read()) != -1) {
-					symbol = (char) int_symbol;
-					if (String.valueOf(symbol).contains("#")
-							|| String.valueOf(symbol).contains("!")
-							|| String.valueOf(symbol).contains(".")) {
-						lines.add(String.valueOf(symbol));
+	
+	// inicializace lvlu
+			public void levels() {
+				try {
+					if (levels < 3) {
+						in = new InputStreamReader(this.getClass().getResourceAsStream("/level" + levels + ".txt"));
+						br = new BufferedReader(in);
+						while((line = br.readLine()) != null){
+							lines.add(line);
+						}
+						//level = (String[]) lines.toArray(new String[lines.size()]);
+						System.out.println("vyska: " + lines.size());
+						System.out.println("dylka: " + lines.get(1).length());
+						initLevel();
+						in.close();
+					}
+
+				} catch (Exception e) {
+					System.err.println("Error: " + e.getMessage());
+				}
+
+			}
+		// inicializace souøadnic
+			public void initLevel() {
+				zdi = new ArrayList<Zed>();
+				// enemies = new ArrayList<Enemy>();
+				for (int y = 0; y < lines.size(); y++) {
+					for(int x = 0; x < lines.get(y).length(); x++){
+						String brick = String.valueOf(lines.get(y).charAt(x));
+					if (brick.contains("#")) {
+						int x2 = x * 32;
+						int y2 = y * 32;
+						zdi.add(new Zed(x2, y2));
+						System.out.println(x2 + " a " + y2);
+					} else if (brick.contains("!")) {
+						int x2 = x * 32;
+						int y2 = y * 32;
+						System.out.println(x2 + " a " + y2);
+						System.out.println(brick);
+						exit = new Exit(x2, y2);
+					} 
+					 /* else if (level[i].contains("E")){ int x = (i % (800 / 32)) * 32;
+					  int y = ((i - (x / 32)) / (800 / 32)) * 32; enemies.add(new
+					  Enemy(x, y, "E" + i)); System.out.println(x + " a " + y); }
+					 */
 					}
 				}
-				level = (String[]) lines.toArray(new String[lines.size()]);
-				System.out.println(level.length);
-				initLevel();
-				in.close();
 			}
-
-		} catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
-		}
-
-	}
-
-	public void initLevel() {
-		zdi = new ArrayList<Zed>();
-		for (int i = 0; i < level.length; i++) {
-			if (level[i].contains("#")) {
-				int x = (i % (800 / 32)) * 32;
-				int y = ((i - (x / 32)) / (800 / 32)) * 32;
-				zdi.add(new Zed(x, y));
-				System.out.println(x + " a " + y);
-			} else if (level[i].contains("!")) {
-				int x = (i % (800 / 32)) * 32;
-				int y = ((i - (x / 32)) / (800 / 32)) * 32;
-				System.out.println(x + " a " + y);
-				System.out.println(level[i]);
-				exit = new Exit(x, y);
-			}
-		}
-	}
-
-	public void paint(Graphics g) {
-		super.paint(g);
-		Graphics2D g2d = (Graphics2D) g;
-		if (levels < 3) {
-			g2d.drawImage(player.getImage(), player.getX(), player.getY(), this);
-			for (int i = 0; i < zdi.size(); i++) {
-				Zed azed = (Zed) zdi.get(i);
-				g2d.drawImage(azed.getImage(), azed.getX(), azed.getY(), this);
-			}
-			g2d.drawImage(exit.getImage(), exit.getX(), exit.getY(), this);
-			g2d.drawRect(0, 0, (int) d.getWidth(), (int) d.getHeight());
-		} else {
-			g2d.drawString("KONEC HRY!!!", 350, 304);
-		}
-		Toolkit.getDefaultToolkit().sync();
-		g.dispose();
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		player.move();
-		checkCollissions();
-		repaint();
-
-	}
-
-	public void checkCollissions() {
-
-		Rectangle r1 = player.getBounds();
-		for (int j = 0; j < zdi.size(); j++) {
-			Zed azed = (Zed) zdi.get(j);
-			Rectangle r2 = azed.getBounds();
-			if (r1.intersects(r2)) {
-				if ((player.getX() + player.getWidth() - 2) < azed.getX()) {
-					player.x = player.getX() - 1;
+			public void checkCollissions() {
+				Rectangle r1 = player.getBounds();
+				for (int j = 0; j < zdi.size(); j++) {
+					Zed azed = (Zed) zdi.get(j);
+					Rectangle r2 = azed.getBounds();
+					if (r1.intersects(r2)) {
+						if ((player.getX() + player.getWidth() - 2) < azed.getX()) {
+							player.x = player.getX() - 1;
+						}
+						if (player.getX() > (azed.getX() + azed.getWidth() - 2)) {
+							player.x = player.getX() + 1;
+						}
+						if ((player.getY() + player.getHeight() - 2) < azed.getY()) {
+							player.y = player.getY() - 1;
+						}
+						if (player.getY() > (azed.getY() + azed.getHeight() - 2)) {
+							player.y = player.getY() + 1;
+						}
+					}
+					/*
+					 * for (int i = 0; i < enemies.size(); i++){ Enemy enemy = (Enemy)
+					 * enemies.get(i); Rectangle r4 = enemy.getBounds(); if
+					 * (r4.intersects(r2)){ enemy.dx = -enemy.dx; enemy.dy = -enemy.dy;
+					 * if ((enemy.getX() + enemy.getWidth() - 2) < azed.getX()) {
+					 * enemy.x = enemy.getX() - 1; } if (enemy.getX() > (azed.getX() +
+					 * azed.getWidth() - 2)) { enemy.x = enemy.getX() + 1; } if
+					 * ((enemy.getY() + enemy.getHeight() - 2) < azed.getY()) { enemy.y
+					 * = enemy.getY() - 1; } if (enemy.getY() > (azed.getY() +
+					 * azed.getHeight() - 2)) { enemy.y = enemy.getY() + 1; } } }
+					 */
 				}
-				if (player.getX() > (azed.getX() + azed.getWidth() - 2)) {
-					player.x = player.getX() + 1;
-				}
-				if ((player.getY() + player.getHeight() - 2) < azed.getY()) {
-					player.y = player.getY() - 1;
-				}
-				if (player.getY() > (azed.getY() + azed.getHeight() - 2)) {
-					player.y = player.getY() + 1;
+
+				Rectangle r3 = exit.getBounds();
+				if (r1.intersects(r3)) {
+					levels += 1;
+					setLevels(levels);
+					player.x = 40;
+					player.y = 40;
+					zdi.clear();
+					clearLevel();
+					levels();
 				}
 			}
-		}
-		Rectangle r3 = exit.getBounds();
-		if (r1.intersects(r3)) {
-			levels += 1;
-			player.x = 40;
-			player.y = 40;
-			zdi.clear();
-			lines.clear();
-			levels();
-		}
-	}
-
-	private class TAdapter extends KeyAdapter {
-		public void keyReleased(KeyEvent e) {
-			player.keyReleased(e);
-		}
-
-		public void keyPressed(KeyEvent e) {
-			player.keyPressed(e);
-		}
-	}
+			public Exit getExit(){
+				return exit;
+			}
+			public ArrayList<Zed> getZdi(){
+				return zdi;
+			}
+			public int getLevels(){
+				return levels;
+			}
+			public void setLevels(int levels){
+				this.levels = levels;
+			}
+			public void clearLevel(){
+				lines.clear();
+			}
+			public Player getPlayer(){
+				return player;
+			}
+	//public void actionPerformed(ActionEvent e) {
+		
+		
+		/*
+		 * for (int i = 0; i<enemies.size(); i++){ Enemy enemy = (Enemy)
+		 * enemies.get(i); enemy.notifyEnemy(); enemy.run(); }
+		 */
+	//}
+	
+	
 }

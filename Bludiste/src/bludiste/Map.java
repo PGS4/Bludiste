@@ -1,6 +1,8 @@
 package bludiste;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
+
 
 /*import java.awt.Image;
 import java.awt.image.ColorModel;
@@ -80,8 +82,21 @@ public class Map implements ImageObserver {
 	}
 }*/
 public class Map{
-	ArrayList<String> bricks;
-	public Map(ArrayList<String> bricks){
-	
+	private Player player;
+	private Board board;
+	private ArrayList<Zed> zdi;
+	private Exit exit;
+	private int levels;
+	public Map(){
+		board = new Board();
+		exit = board.getExit();
+		levels = board.getLevels();
+		zdi = board.getZdi();
+		player = board.getPlayer();
 	}
+	
+	
+		
+		
+
 }
