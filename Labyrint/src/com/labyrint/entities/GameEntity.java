@@ -7,7 +7,7 @@ public class GameEntity{
 	int x, y;
 	Image image;
 	int width, height;
-
+	int direction, blockX, blockY;
 	public GameEntity(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -45,5 +45,21 @@ public class GameEntity{
 	
 	public Rectangle getBounds(){
 		return new Rectangle(x,y,getWidth(),getHeight());
+	}
+	public int getBlockX2(){
+		blockX = ((x+getWidth()) - ((x+getWidth())%32))/32;
+		return blockX;
+	}
+	public int getBlockY2(){
+		blockY = ((y+getHeight()) - ((y+getHeight())%32))/32;
+		return blockY;
+	}
+	public int getBlockX(){
+		blockX = ((x) - ((x)%32))/32;
+		return blockX;
+	}
+	public int getBlockY(){
+		blockY = ((y) - ((y)%32))/32;
+		return blockY;
 	}
 }

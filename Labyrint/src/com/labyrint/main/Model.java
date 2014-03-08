@@ -5,12 +5,13 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 
+import com.labyrint.entities.Enemy;
 import com.labyrint.entities.Exit;
 import com.labyrint.entities.Player;
 import com.labyrint.entities.Zed;
 
 public class Model {
-	private ArrayList<String> lines = new ArrayList<String>();
+	private static ArrayList<String> lines = new ArrayList<String>();
 	private static ArrayList<Zed> zdi;
 	private static int levels = 1;
 	private String line;
@@ -18,8 +19,9 @@ public class Model {
 	private BufferedReader br;
 	private static Exit exit;
 	private static Player player = new Player(33,33);
+	private static int lives = 4;
+	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	public Model(){
-		levels();
 	}
 	// InputStream
 	public void levels() {
@@ -50,17 +52,32 @@ public class Model {
 					int x2 = x * 32;
 					int y2 = y * 32;
 					zdi.add(new Zed(x2, y2));
-					System.out.println(x2 + " a " + y2);
 				} else if (brick.contains("!")) {
 					int x2 = x * 32;
 					int y2 = y * 32;
-					System.out.println(x2 + " a " + y2);
-					System.out.println(brick);
 					exit = new Exit(x2,y2);
+				} else if (brick.contains("E")) {
+					int x2 = x*32;
+					int y2 = y*32;
+					enemies.add(new Enemy(x2,y2, "Enemy" + x + y));
 				}
 
 			}
 		}
+	}
+	public void playerDead(){
+		lives -= 1;
+		player.setX(33);
+		player.setY(33);
+	}
+	public static int getLives(){
+		return lives;
+	}
+	public static ArrayList<String> getLines(){
+		return lines;
+	}
+	public static ArrayList<Enemy> getEnemies(){
+		return enemies;
 	}
 	public static int getLevels(){
 		return levels;
@@ -83,6 +100,7 @@ public class Model {
 		player.setX(40);
 		player.setY(40);
 		zdi.clear();
+		enemies.clear();
 		lines.clear();
 		levels();
 	}

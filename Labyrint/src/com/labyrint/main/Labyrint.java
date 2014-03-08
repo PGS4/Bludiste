@@ -10,10 +10,12 @@ public class Labyrint extends JFrame{
 	private static final long serialVersionUID = 9025982398559903990L;
 	
 	public Labyrint(){
-		add(new Interface());
-		Interface grafika = new Interface();
 		Model model = new Model();
+		model.levels();
+		add(new Interface());
 		Controller control = new Controller();
+		Thread controller = new Thread(control);
+		controller.start();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		setSize(800, 635);

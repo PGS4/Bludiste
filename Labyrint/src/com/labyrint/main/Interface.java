@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 import javax.swing.JPanel;
 
+import com.labyrint.entities.Enemy;
 import com.labyrint.entities.Exit;
 import com.labyrint.entities.Player;
 import com.labyrint.entities.Zed;
@@ -26,14 +27,14 @@ public class Interface extends JPanel implements ActionListener{
 	private Color pozadi = new Color(199, 199, 199);
 	private Exit exit;
 	private static Player player;
+	private int lives;
 	private int levels;
-	private Model model;
 	private ArrayList<Zed> zdi;
+	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	public Interface(){
 		setFocusable(true);
 		setBackground(pozadi);
 		setDoubleBuffered(true);
-		model = new Model();
 		player = Model.getPlayer();
 		Timer time = new Timer(5,this);
 		time.start();
@@ -46,16 +47,19 @@ public class Interface extends JPanel implements ActionListener{
 		exit = Model.getExit();
 		levels = Model.getLevels();
 		exit = Model.getExit();
-		System.out.println(levels);
-		if (levels < 3) {
+		enemies = Model.getEnemies();
+		lives = Model.getLives();
+		if (levels < 3 && lives > 0) {
 			g2d.drawImage(player.getImage(), player.getX(), player.getY(), null);
 			for(int i = 0; i<zdi.size(); i++){
 				Zed azed = zdi.get(i);
 				g2d.drawImage(azed.getImage(), azed.getX(), azed.getY(), null);
-				g2d.drawRect(azed.getX(), azed.getY(), azed.getWidth(), azed.getHeight());
+			}
+			for(int i = 0; i<enemies.size(); i++){
+				Enemy enemy = enemies.get(i);
+				g2d.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), null);
 			}
 			g2d.drawImage(exit.getImage(), exit.getX(), exit.getY(),null);
-			g2d.drawRect(player.getX(), player.getY(), player.getWidth(), player.getHeight());
 		} else {
 			g2d.drawString("KONEC HRY!!!", 350, 304);
 		}
