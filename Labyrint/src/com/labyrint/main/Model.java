@@ -5,6 +5,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 
+import com.labyrint.entities.Exit;
+import com.labyrint.entities.Player;
+import com.labyrint.entities.Zed;
+
 public class Model {
 	private ArrayList<String> lines = new ArrayList<String>();
 	private static ArrayList<Zed> zdi;

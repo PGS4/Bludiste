@@ -1,4 +1,4 @@
-package com.labyrint.main;
+package com.labyrint.entities;
 
 import javax.swing.ImageIcon;
 

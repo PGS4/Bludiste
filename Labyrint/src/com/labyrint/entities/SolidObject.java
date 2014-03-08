@@ -1,4 +1,5 @@
-package com.labyrint.main;
+package com.labyrint.entities;
+
 
 
 public class SolidObject extends GameEntity{

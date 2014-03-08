@@ -7,6 +7,10 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
+import com.labyrint.entities.Exit;
+import com.labyrint.entities.Player;
+import com.labyrint.entities.Zed;
+
 public class Controller implements ActionListener {
 	private Model model;
 	private Interface grafika;
@@ -36,16 +40,16 @@ public class Controller implements ActionListener {
 				r2 = zed.getBounds();
 				if (r1.intersects(r2)) {
 					if ((player.getX() + player.getWidth() - 2) < zed.getX()) {
-						player.x = player.getX() - 1;
+						player.setX(player.getX() - 1);
 					}
 					if (player.getX() > (zed.getX() + zed.getWidth() - 2)) {
-						player.x = player.getX() + 1;
+						player.setX(player.getX() + 1);
 					}
 					if ((player.getY() + player.getHeight() - 2) < zed.getY()) {
-						player.y = player.getY() - 1;
+						player.setY(player.getY() - 1);
 					}
 					if (player.getY() > (zed.getY() + zed.getHeight() - 2)) {
-						player.y = player.getY() + 1;
+						player.setY(player.getY() + 1);
 					}
 				}
 			}

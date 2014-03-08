@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 import javax.swing.JPanel;
 
+import com.labyrint.entities.Exit;
+import com.labyrint.entities.Player;
+import com.labyrint.entities.Zed;
+
 
 public class Interface extends JPanel implements ActionListener{
 	/**
