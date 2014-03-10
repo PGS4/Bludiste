@@ -1,8 +1,10 @@
 package com.labyrint.main;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,14 +32,17 @@ public class Interface extends JPanel implements ActionListener{
 	private int lives;
 	private int levels;
 	private ArrayList<Zed> zdi;
+	private Lives live;
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	public Interface(){
 		setFocusable(true);
 		setBackground(pozadi);
 		setDoubleBuffered(true);
 		player = Model.getPlayer();
+		live = new Lives();
 		Timer time = new Timer(5,this);
 		time.start();
+		
 	}
 	public void paint(Graphics g){
 		super.paint(g);
@@ -49,7 +54,7 @@ public class Interface extends JPanel implements ActionListener{
 		exit = Model.getExit();
 		enemies = Model.getEnemies();
 		lives = Model.getLives();
-		if (levels < 3 && lives > 0) {
+		if (levels < 4 && lives > 0) {
 			g2d.drawImage(player.getImage(), player.getX(), player.getY(), null);
 			for(int i = 0; i<zdi.size(); i++){
 				Zed azed = zdi.get(i);
@@ -60,6 +65,10 @@ public class Interface extends JPanel implements ActionListener{
 				g2d.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), null);
 			}
 			g2d.drawImage(exit.getImage(), exit.getX(), exit.getY(),null);
+			for (int i = 0; i<lives; i++){
+				g2d.drawImage(live.getImage(), (i+1)*32, getHeight()-30, null);
+			}
+			//g2d.drawString("Poèet životù: " + lives, 2, 16);
 		} else {
 			g2d.drawString("KONEC HRY!!!", 350, 304);
 		}

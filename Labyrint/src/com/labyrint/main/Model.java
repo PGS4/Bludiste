@@ -12,7 +12,7 @@ import com.labyrint.entities.Zed;
 
 public class Model {
 	private static ArrayList<String> lines = new ArrayList<String>();
-	private static ArrayList<Zed> zdi;
+	private static ArrayList<Zed> zdi = new ArrayList<Zed>();;
 	private static int levels = 1;
 	private String line;
 	private Reader in;
@@ -26,7 +26,7 @@ public class Model {
 	// InputStream
 	public void levels() {
 		try {
-			if (levels < 3) {
+			if (levels < 4) {
 				in = new InputStreamReader(this.getClass().getResourceAsStream(
 						"/level" + levels + ".txt"));
 				br = new BufferedReader(in);
@@ -44,7 +44,6 @@ public class Model {
 	}
 
 	public void initLevel() {
-		zdi = new ArrayList<Zed>();
 		for (int y = 0; y < lines.size(); y++) {
 			for (int x = 0; x < lines.get(y).length(); x++) {
 				String brick = String.valueOf(lines.get(y).charAt(x));
@@ -69,6 +68,9 @@ public class Model {
 		lives -= 1;
 		player.setX(33);
 		player.setY(33);
+		if(lives == 0){
+			endGame();
+		}
 	}
 	public static int getLives(){
 		return lives;
@@ -94,8 +96,12 @@ public class Model {
 	public static ArrayList<Zed> getZdi(){
 		return zdi;
 	}
+	public void endGame(){
+		zdi.clear();
+		enemies.clear();
+		lines.clear();
+	}
 	public void setNewLevel() {
-		// TODO Auto-generated method stub
 		levels += 1;
 		player.setX(40);
 		player.setY(40);

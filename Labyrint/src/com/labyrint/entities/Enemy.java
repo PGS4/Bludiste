@@ -34,8 +34,7 @@ public class Enemy extends MovableObject implements ActionListener{
 		if(direction == 3){
 			dx = 0;
 			dy = -1;
-		}
-		
+		}		
 	}
 	public void changeDirection(int problem){
 		Random rand = new Random();

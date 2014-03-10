@@ -21,6 +21,7 @@ public class Controller implements Runnable {
 	private Zed zed;
 	private Rectangle r1, r2, r3, r4;
 	private Exit exit;
+	private boolean vydim;
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private ArrayList<String> lines = new ArrayList<String>();
 
@@ -36,7 +37,7 @@ public class Controller implements Runnable {
 		zdi = Model.getZdi();
 		exit = Model.getExit();
 		lines = Model.getLines();
-		if (levels < 3) {
+		if (levels < 4) {
 			r1 = player.getBounds();
 			for (int i = 0; i < zdi.size(); i++) {
 				zed = zdi.get(i);
@@ -56,69 +57,205 @@ public class Controller implements Runnable {
 					}
 				}
 			}
-			for (int i = 0; i < enemies.size(); i++){
+			for (int i = 0; i < enemies.size(); i++) {
 				Enemy enemy = enemies.get(i);
 				r4 = enemy.getBounds();
-				if(enemy.getDx() == 1){
-					if(String.valueOf(lines.get(enemy.getBlockY()).charAt(enemy.getBlockX()+1)).contains("#") || String.valueOf(lines.get(enemy.getBlockY2()).charAt(enemy.getBlockX()+1)).contains("#")){
-						enemy.changeDirection(0);
-					}
+				if (String.valueOf(
+						lines.get(enemy.getBlockY()).charAt(enemy.getBlockX()))
+						.contains(".")
+						&& String.valueOf(
+								lines.get(enemy.getBlockY2()).charAt(
+										enemy.getBlockX2())).contains(".")) {
+					/*if (enemy.getDx() == 1) {
+						if (String.valueOf(
+								lines.get(enemy.getBlockY()).charAt(
+										enemy.getBlockX() + 1)).contains(".")
+								&& String.valueOf(
+										lines.get(enemy.getBlockY2()).charAt(
+												enemy.getBlockX() + 1))
+										.contains(".")) {
+							Enemy.canMove("right");
+						}
+					}*/
 				}
-				if(enemy.getDx() == -1){
-					if(String.valueOf(lines.get(enemy.getBlockY()).charAt(enemy.getBlockX2()-1)).contains("#") || String.valueOf(lines.get(enemy.getBlockY2()).charAt(enemy.getBlockX2()-1)).contains("#")){
-						enemy.changeDirection(1);
+					// pokud je zed vpravo
+					if (enemy.getDx() == 1) {
+						if (String.valueOf(
+								lines.get(enemy.getBlockY()).charAt(
+										enemy.getBlockX() + 1)).contains("#")
+								|| String.valueOf(
+										lines.get(enemy.getBlockY2()).charAt(
+												enemy.getBlockX() + 1))
+										.contains("#")) {
+							enemy.changeDirection(0);
+						}
 					}
-				}
-				if(enemy.getDy() == -1){
-					if(String.valueOf(lines.get(enemy.getBlockY2()-1).charAt(enemy.getBlockX())).contains("#") || String.valueOf(lines.get(enemy.getBlockY2()-1).charAt(enemy.getBlockX2())).contains("#")){
-						enemy.changeDirection(3);
+					// pokud je zed vlevo
+					if (enemy.getDx() == -1) {
+						if (String.valueOf(
+								lines.get(enemy.getBlockY()).charAt(
+										enemy.getBlockX2() - 1)).contains("#")
+								|| String.valueOf(
+										lines.get(enemy.getBlockY2()).charAt(
+												enemy.getBlockX2() - 1))
+										.contains("#")) {
+							enemy.changeDirection(1);
+						}
 					}
-				}
-				if(enemy.getDy() == 1){
-					if(String.valueOf(lines.get(enemy.getBlockY()+1).charAt(enemy.getBlockX())).contains("#") || String.valueOf(lines.get(enemy.getBlockY()+1).charAt(enemy.getBlockX2())).contains("#")){
-						enemy.changeDirection(2);
+					// pokud je zed nahore
+					if (enemy.getDy() == -1) {
+						if (String.valueOf(
+								lines.get(enemy.getBlockY2() - 1).charAt(
+										enemy.getBlockX())).contains("#")
+								|| String.valueOf(
+										lines.get(enemy.getBlockY2() - 1)
+												.charAt(enemy.getBlockX2()))
+										.contains("#")) {
+							enemy.changeDirection(3);
+						}
 					}
-				}
-				if (Math.abs(player.getX()-enemy.getX())<64 && Math.abs(player.getY()-enemy.getY())<64){
-					//System.out.println("JE BLIZKO!! \n" + Math.abs(player.getX()-enemy.getX()) + " a " + Math.abs(player.getY()-enemy.getY()));
-					if(player.getBlockX()<enemy.getBlockX() && (player.getBlockY()==enemy.getBlockY() || player.getBlockY2() == enemy.getBlockY())){
-						if(String.valueOf(lines.get(enemy.getBlockY()).charAt(enemy.getBlockX2()-1)).contains("#") || String.valueOf(lines.get(enemy.getBlockY2()).charAt(enemy.getBlockX2()-1)).contains("#")){
-							System.out.println("Je vlevo ale nemuzu tam :(");
-						}else{
+					// pokud je zed dole
+					if (enemy.getDy() == 1) {
+						if (String.valueOf(
+								lines.get(enemy.getBlockY() + 1).charAt(
+										enemy.getBlockX())).contains("#")
+								|| String.valueOf(
+										lines.get(enemy.getBlockY() + 1)
+												.charAt(enemy.getBlockX2()))
+										.contains("#")) {
+							enemy.changeDirection(2);
+						}
+					}
+				// vydi hrace vlevo
+				if (player.getBlockX() < enemy.getBlockX()
+						&& (player.getBlockY() == enemy.getBlockY() || player
+								.getBlockY2() == enemy.getBlockY())) {
+					vydim = true;
+					for (int blocks = 1; blocks < (enemy.getBlockX2() - player
+							.getBlockX()); blocks++) {
+						if (!((enemy.getBlockX2() - blocks) < 1)
+								&& !((enemy.getBlockX2() - blocks) < 1)) {
+							if (!String.valueOf(
+									lines.get(enemy.getBlockY()).charAt(
+											enemy.getBlockX2() - blocks))
+									.contains("#")
+									&& !String.valueOf(
+											lines.get(enemy.getBlockY2())
+													.charAt(enemy.getBlockX2()
+															- blocks))
+											.contains("#")) {
+							} else {
+								vydim = false;
+							}
+						}
+					}
+					if (vydim == true) {
 						enemy.setDx(-1);
 						enemy.setDy(0);
-						}
-					}
-					if(player.getBlockX()>enemy.getBlockX() && (player.getBlockY()==enemy.getBlockY() || player.getBlockY2() == enemy.getBlockY())){
-						if(String.valueOf(lines.get(enemy.getBlockY()).charAt(enemy.getBlockX()+1)).contains("#") || String.valueOf(lines.get(enemy.getBlockY2()).charAt(enemy.getBlockX()+1)).contains("#")){
-							System.out.println("Je vpravo ale nemuzu tam :(");
-						}else{
-						enemy.setDx(1);
-						enemy.setDy(0);
-						}
-					}
-					if(player.getBlockY()<enemy.getBlockY() && (player.getBlockX()==enemy.getBlockX() || player.getBlockX2() == enemy.getBlockX())){
-						if(String.valueOf(lines.get(enemy.getBlockY2()-1).charAt(enemy.getBlockX())).contains("#") || String.valueOf(lines.get(enemy.getBlockY2()-1).charAt(enemy.getBlockX2())).contains("#")){
-							System.out.println("Je nahore ale nemuzu tam :(");
-						}else{
-						enemy.setDx(0);
-						enemy.setDy(-1);
-						}
-					}
-					if(player.getBlockY()>enemy.getBlockY() && (player.getBlockX()==enemy.getBlockX() || player.getBlockX2() == enemy.getBlockX())){
-						if(String.valueOf(lines.get(enemy.getBlockY()+1).charAt(enemy.getBlockX())).contains("#") || String.valueOf(lines.get(enemy.getBlockY()+1).charAt(enemy.getBlockX2())).contains("#")){
-							System.out.println("Je dole ale nemuzu tam :(");
-						}else{
-						enemy.setDx(0);
-						enemy.setDy(1);
-						}
+						System.out.println("TED TE MAAAM!!");
 					}
 				}
-				if(r4.intersects(r1)){
-					model.playerDead();
+				// vydi hrace v pravo
+				if (player.getBlockX() > enemy.getBlockX()
+						&& (player.getBlockY() == enemy.getBlockY() || player
+								.getBlockY2() == enemy.getBlockY())) {
+					vydim = true;
+					for (int blocks = 1; blocks < (player.getBlockX2() - enemy
+							.getBlockX()); blocks++) {
+						if (!((enemy.getBlockX() + blocks) > lines.get(1)
+								.length() - 1)
+								&& !((enemy.getBlockX() + blocks) > lines
+										.get(1).length() - 1)) {
+							if (!String.valueOf(
+									lines.get(enemy.getBlockY()).charAt(
+											enemy.getBlockX() + blocks))
+									.contains("#")
+									&& !String.valueOf(
+											lines.get(enemy.getBlockY2())
+													.charAt(enemy.getBlockX()
+															+ blocks))
+											.contains("#")) {
+							} else {
+								vydim = false;
+							}
+						}
 					}
+					if (vydim == true) {
+						enemy.setDx(1);
+						enemy.setDy(0);
+						System.out.println("TED TE MAAAM!!");
+					}
+				}
+				// vydi hrace nahore
+				// chase mode
+				if (player.getBlockY() < enemy.getBlockY()
+						&& (player.getBlockX() == enemy.getBlockX() || player
+								.getBlockX2() == enemy.getBlockX())) {
+					vydim = true;
+					for (int blocks = 1; blocks < (enemy.getBlockY2() - player
+							.getBlockY()); blocks++) {
+						if ((!(enemy.getBlockY2() - blocks < 1))
+								&& (!(enemy.getBlockY2() - blocks < 1))) {
+							if (!String.valueOf(
+									lines.get(enemy.getBlockY2() - blocks)
+											.charAt(enemy.getBlockX()))
+									.contains("#")
+									&& !String
+											.valueOf(
+													lines.get(
+															enemy.getBlockY2()
+																	- blocks)
+															.charAt(enemy
+																	.getBlockX2()))
+											.contains("#")) {
+							} else {
+								vydim = false;
+							}
+						}
+					}
+					if (vydim == true) {
+						enemy.setDx(0);
+						enemy.setDy(-1);
+						System.out.println("TED TE MAAAM!!");
+					}
+				}
+				// vydi hrace dole
+				if (player.getBlockY() > enemy.getBlockY()
+						&& (player.getBlockX() == enemy.getBlockX() || player
+								.getBlockX2() == enemy.getBlockX())) {
+					vydim = true;
+					for (int blocks = 1; blocks < (player.getBlockY2() - enemy
+							.getBlockY()); blocks++) {
+						if ((!(enemy.getBlockY2() + blocks > lines.size() - 1))
+								&& (!(enemy.getBlockY2() + blocks > lines
+										.size() - 1))) {
+							if (!String.valueOf(
+									lines.get(enemy.getBlockY() + blocks)
+											.charAt(enemy.getBlockX()))
+									.contains("#")
+									&& !String
+											.valueOf(
+													lines.get(
+															enemy.getBlockY()
+																	+ blocks)
+															.charAt(enemy
+																	.getBlockX2()))
+											.contains("#")) {
+							} else {
+								vydim = false;
+							}
+						}
+					}
+					if (vydim == true) {
+						enemy.setDx(0);
+						enemy.setDy(1);
+						System.out.println("TED TE MAAAM!!");
+					}
+				}
+				if (r4.intersects(r1)) {
+					model.playerDead();
+				}
 			}
-			
 			r3 = exit.getBounds();
 			if (r1.intersects(r3)) {
 				model.setNewLevel();
@@ -126,10 +263,11 @@ public class Controller implements Runnable {
 			}
 		}
 	}
+
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		Timer timer = new Timer(5, new ActionListener(){
+		Timer timer = new Timer(5, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				checkCollisions();

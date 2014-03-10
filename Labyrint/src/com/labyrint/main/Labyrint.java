@@ -13,9 +13,6 @@ public class Labyrint extends JFrame{
 		Model model = new Model();
 		model.levels();
 		add(new Interface());
-		Controller control = new Controller();
-		Thread controller = new Thread(control);
-		controller.start();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		setSize(800, 635);
@@ -23,8 +20,10 @@ public class Labyrint extends JFrame{
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-	
 	public static void main(String[] args) {
 		new Labyrint();
+		Controller control = new Controller();
+		Thread controller = new Thread(control);
+		controller.start();
 	}
 }
