@@ -19,3 +19,6 @@ verze 0.0.8
 - optimalizace kódu, arraylisty už neobsahují přebytek informací, které jen berou paměť
   (dříve se konstruktor třídy Model spouštěl pro více tříd a při každym spuštění se vyvolala metoda levels(),
   nyní se spouští metoda levels() puze jednou)
+
+verze 0.0.9
+- vylepšení AI nepřátel
