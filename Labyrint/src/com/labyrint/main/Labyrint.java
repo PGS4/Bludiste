@@ -10,9 +10,8 @@ public class Labyrint extends JFrame{
 	private static final long serialVersionUID = 9025982398559903990L;
 	
 	public Labyrint(){
-		Model model = new Model();
-		model.levels();
 		add(new Interface());
+		//add(new com.editor.main.Interface());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		setSize(800, 635);
@@ -27,3 +26,9 @@ public class Labyrint extends JFrame{
 		controller.start();
 	}
 }
+/* TODO list:
+	Vytvoøení menu - 75%
+	Opravení duplikace tlaèítek
+	Vytvoøení editoru
+	Vyladìní pohledu
+	*/

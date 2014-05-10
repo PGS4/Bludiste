@@ -1,4 +1,4 @@
-package com.labyrint.main;
+package com.labyrint.graphics;
 
 import java.awt.Image;
 

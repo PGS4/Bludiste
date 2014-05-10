@@ -21,6 +21,7 @@ public class Model {
 	private static Player player = new Player(33,33);
 	private static int lives = 4;
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private static ArrayList<int[]> enemyPositions = new ArrayList<int[]>();
 	public Model(){
 	}
 	// InputStream
@@ -56,9 +57,10 @@ public class Model {
 					int y2 = y * 32;
 					exit = new Exit(x2,y2);
 				} else if (brick.contains("E")) {
-					int x2 = x*32;
-					int y2 = y*32;
+					int x2 = (x*32)+4;
+					int y2 = (y*32)+4;
 					enemies.add(new Enemy(x2,y2, "Enemy" + x + y));
+					enemyPositions.add(new int[4]);
 				}
 
 			}
@@ -71,6 +73,9 @@ public class Model {
 		if(lives == 0){
 			endGame();
 		}
+	}
+	public static ArrayList<int[]> getEnemyPositions() {
+		return enemyPositions;
 	}
 	public static int getLives(){
 		return lives;
@@ -108,6 +113,19 @@ public class Model {
 		zdi.clear();
 		enemies.clear();
 		lines.clear();
+		enemyPositions.clear();
+		levels();
+	}
+	
+	public void startNewGame(){
+		levels = 1;
+		player.setX(40);
+		player.setY(40);
+		lives = 4;
+		zdi.clear();
+		enemies.clear();
+		lines.clear();
+		enemyPositions.clear();
 		levels();
 	}
 }
