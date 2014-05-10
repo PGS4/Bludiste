@@ -22,3 +22,10 @@ verze 0.0.8
 
 verze 0.0.9
 - vylepšení AI nepřátel
+
+verze 0.1.0 - Velky Update!
+- Implementace menu
+- Implementace FOV pro hráče
+- Opravení několika bugů s nepřátelema
+- Příprava pro implementaci editoru map
+- Menší optimalizace
