@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Labyrint</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<variableList>
+		<variable>
+			<name>straightedge</name>
+			<value>file:/C:/Users/kecicz/Downloads/src_straightedge-0.3.zip</value>
+		</variable>
+	</variableList>
+</projectDescription>

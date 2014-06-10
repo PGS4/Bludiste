@@ -18,12 +18,14 @@ public class Model {
 	private Reader in;
 	private BufferedReader br;
 	private static Exit exit;
-	private static Player player = new Player(33,33);
+	private static Player player = new Player(33, 33);
 	private static int lives = 4;
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private static ArrayList<int[]> enemyPositions = new ArrayList<int[]>();
-	public Model(){
+
+	public Model() {
 	}
+
 	// InputStream
 	public void levels() {
 		try {
@@ -49,63 +51,74 @@ public class Model {
 			for (int x = 0; x < lines.get(y).length(); x++) {
 				String brick = String.valueOf(lines.get(y).charAt(x));
 				if (brick.contains("#")) {
-					int x2 = x * 32;
-					int y2 = y * 32;
+					int x2 = (x * 32);
+					int y2 = (y * 32);
 					zdi.add(new Zed(x2, y2));
 				} else if (brick.contains("!")) {
 					int x2 = x * 32;
 					int y2 = y * 32;
-					exit = new Exit(x2,y2);
+					exit = new Exit(x2, y2);
 				} else if (brick.contains("E")) {
-					int x2 = (x*32)+4;
-					int y2 = (y*32)+4;
-					enemies.add(new Enemy(x2,y2, "Enemy" + x + y));
+					int x2 = (x * 32) + 4;
+					int y2 = (y * 32) + 4;
+					enemies.add(new Enemy(x2, y2, "Enemy" + x + y));
 					enemyPositions.add(new int[4]);
 				}
-
 			}
 		}
 	}
-	public void playerDead(){
+
+	public void playerDead() {
 		lives -= 1;
 		player.setX(33);
 		player.setY(33);
-		if(lives == 0){
+		if (lives == 0) {
 			endGame();
 		}
 	}
+
 	public static ArrayList<int[]> getEnemyPositions() {
 		return enemyPositions;
 	}
-	public static int getLives(){
+
+	public static int getLives() {
 		return lives;
 	}
-	public static ArrayList<String> getLines(){
+
+	public static ArrayList<String> getLines() {
 		return lines;
 	}
-	public static ArrayList<Enemy> getEnemies(){
+
+	public static ArrayList<Enemy> getEnemies() {
 		return enemies;
 	}
-	public static int getLevels(){
+
+	public static int getLevels() {
 		return levels;
 	}
-	public static void setLevels(int level){
-		levels=level;
+
+	public static void setLevels(int level) {
+		levels = level;
 	}
-	public static Player getPlayer(){
+
+	public static Player getPlayer() {
 		return player;
 	}
-	public static Exit getExit(){
+
+	public static Exit getExit() {
 		return exit;
 	}
-	public static ArrayList<Zed> getZdi(){
+
+	public static ArrayList<Zed> getZdi() {
 		return zdi;
 	}
-	public void endGame(){
+
+	public void endGame() {
 		zdi.clear();
 		enemies.clear();
 		lines.clear();
 	}
+
 	public void setNewLevel() {
 		levels += 1;
 		player.setX(40);
@@ -116,8 +129,8 @@ public class Model {
 		enemyPositions.clear();
 		levels();
 	}
-	
-	public void startNewGame(){
+
+	public void startNewGame() {
 		levels = 1;
 		player.setX(40);
 		player.setY(40);

@@ -15,6 +15,8 @@ public class Enemy extends MovableObject implements ActionListener {
 	private String behaviour = "normal";
 	private int lastDx = dx, lastDy = dy;
 	private boolean stop=false;
+	
+	
 	/*
 	 * private Timer behaviourStop = new
 	 * Timer((int)(Math.floor(Math.random()*2+3)*1000), new ActionListener(){
@@ -33,7 +35,7 @@ public class Enemy extends MovableObject implements ActionListener {
 	 * 
 	 * }); Timer chase = new Timer(8,this);
 	 */
-	Timer normal = new Timer(12, this);
+	private Timer normal = new Timer(12, this);
 
 	public Enemy(int x, int y, String name) {
 		super(x, y);

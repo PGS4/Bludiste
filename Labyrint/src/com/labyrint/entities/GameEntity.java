@@ -47,19 +47,19 @@ public class GameEntity{
 		return new Rectangle(x,y,getWidth(),getHeight());
 	}
 	public int getBlockX2(){
-		blockX = ((x+getWidth()) - ((x+getWidth())%32))/32;
+		blockX = ((x+getWidth()-2) - ((x+getWidth()-2)%32))/32;
 		return blockX;
 	}
 	public int getBlockY2(){
-		blockY = ((y+getHeight()) - ((y+getHeight())%32))/32;
+		blockY = ((y+getHeight()-2) - ((y+getHeight()-2)%32))/32;
 		return blockY;
 	}
 	public int getBlockX(){
-		blockX = ((x) - ((x)%32))/32;
+		blockX = ((x+2) - ((x+2)%32))/32;
 		return blockX;
 	}
 	public int getBlockY(){
-		blockY = ((y) - ((y)%32))/32;
+		blockY = ((y+2) - ((y+2)%32))/32;
 		return blockY;
 	}
 }
