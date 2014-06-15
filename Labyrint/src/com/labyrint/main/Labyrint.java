@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-import com.editor.main.Controller2;
 import com.editor.main.Interface2;
 import com.editor.main.ItemsWindow;
 import com.editor.main.Model2;
@@ -37,7 +36,6 @@ public class Labyrint extends JFrame {
 					Model2 editorModel = new Model2();
 					editorModel.newMap();
 					Interface2 editorWindow = new Interface2();
-					Controller2 editorControl = new Controller2();
 					setTitle("Editor map");
 					remove(game);
 					setJMenuBar(editorWindow.addMenu());
@@ -58,7 +56,6 @@ public class Labyrint extends JFrame {
 				}
 
 			}
-
 		});
 		editorCheck.start();
 	}

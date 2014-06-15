@@ -24,15 +24,19 @@ public class ItemsWindow extends JPanel implements ActionListener{
 		EditorItem zed = new EditorItem(this.getClass().getResource("/zed.png"), "#", 32, 32);
 		EditorItem enemy = new EditorItem(this.getClass().getResource("/enemy.png"), "E", 32*3, 32);
 		EditorItem exit = new EditorItem(this.getClass().getResource("/exit.png"), "!", 32*5, 32);
+		EditorItem waypoint = new EditorItem(this.getClass().getResource("/life.png"), ".", 32*7, 32);
 		g2d.drawImage(zed.getImage(), zed.getX(), zed.getY(), null);
 		g2d.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), null);
 		g2d.drawImage(exit.getImage(), exit.getX(), exit.getY(), null);
+		g2d.drawImage(waypoint.getImage(), waypoint.getX(), waypoint.getY(), null);
 		zed.addActionListener(this);
 		enemy.addActionListener(this);
 		exit.addActionListener(this);
+		waypoint.addActionListener(this);
 		add(zed);
 		add(exit);
 		add(enemy);
+		add(waypoint);
 		g2d.setColor(new Color(0.4f,0.4f,1.0f,0.4f));
 		if(selectedValue == "#"){
 			g2d.fillRect(zed.getX(), zed.getY(), zed.getWidth(), zed.getHeight());
@@ -42,6 +46,9 @@ public class ItemsWindow extends JPanel implements ActionListener{
 		}
 		if(selectedValue == "!"){
 			g2d.fillRect(exit.getX(), exit.getY(), exit.getWidth(), exit.getHeight());
+		}
+		if(selectedValue == "."){
+			g2d.fillRect(waypoint.getX(), waypoint.getY(), waypoint.getWidth(), waypoint.getHeight());
 		}
 	}
 
@@ -56,6 +63,9 @@ public class ItemsWindow extends JPanel implements ActionListener{
 		}
 		if(e.getActionCommand().equals("!")){
 			selectedValue = "!";
+		}
+		if(e.getActionCommand().equals(".")){
+			selectedValue = ".";
 		}
 		repaint();
 	}

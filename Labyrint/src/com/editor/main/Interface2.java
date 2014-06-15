@@ -13,6 +13,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 public class Interface2 extends JPanel implements ActionListener, MouseListener {
 	/**
@@ -31,6 +32,7 @@ public class Interface2 extends JPanel implements ActionListener, MouseListener 
 	private int exit = 0;
 	private int enemy = 0;
 	private JFileChooser fc;
+	private FileFilter filter;
 	private Color background = new Color(0.7f, 0.7f, 0.7f);
 	private Timer dragger = new Timer(20, new ActionListener() {
 
@@ -83,6 +85,7 @@ public class Interface2 extends JPanel implements ActionListener, MouseListener 
 		addMouseListener(this);
 		setBackground(background);
 		fc = new JFileChooser();
+		fc.setAcceptAllFileFilterUsed(false);
 	}
 
 	public void paint(Graphics g) {
@@ -115,10 +118,14 @@ public class Interface2 extends JPanel implements ActionListener, MouseListener 
 				ii = new ImageIcon(this.getClass().getResource("/exit.png"));
 				itemImage = ii.getImage();
 			}
+			if (map.get(souradnice).equals(".")) {
+				ii = new ImageIcon(this.getClass().getResource("/life.png"));
+				itemImage = ii.getImage();
+			}
 			g2d.drawImage(itemImage, x, y, null);
 		}
-		ImageIcon ii = new ImageIcon(this.getClass().getResource("/star.png"));;
-		Image itemImage =  ii.getImage();
+		ImageIcon ii = new ImageIcon(this.getClass().getResource("/star.png"));
+		Image itemImage = ii.getImage();
 		g2d.drawImage(itemImage, 35, 35, null);
 		Font info = new Font("Times New Roman", Font.BOLD, 20);
 		Color bad = new Color(255, 0, 0);
@@ -199,25 +206,123 @@ public class Interface2 extends JPanel implements ActionListener, MouseListener 
 				System.exit(0);
 			}
 			if (e.getActionCommand().equals("Nový")) {
+				exit=0;
+				enemy=0;
 				model.newMap();
 			}
 			if (e.getActionCommand().equals("Uložit")) {
+				fc.removeChoosableFileFilter(filter);
+				fc.validate();
+				filter = new FileFilter() {
+
+					@Override
+					public String getDescription() {
+						// TODO Auto-generated method stub
+						return "Java object file (.tmp)";
+					}
+
+					@Override
+					public boolean accept(File file) {
+						// TODO Auto-generated method stub
+						if (file.isDirectory()) {
+							return true;
+						}
+						if (file.getName().contains(".tmp")) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				};
+				fc.setFileFilter(filter);
 				int returnVal = fc.showSaveDialog(Interface2.this);
-		        if (returnVal == JFileChooser.APPROVE_OPTION) {
-		        	 File file = fc.getSelectedFile();
-		        	 model.saveFile(file);
-		        }
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					model.saveFile(file);
+				}
 			}
 			if (e.getActionCommand().equals("Nahrát")) {
+				fc.removeChoosableFileFilter(filter);
+				fc.validate();
+				filter = new FileFilter() {
+
+					@Override
+					public String getDescription() {
+						// TODO Auto-generated method stub
+						return "Java object file (.tmp)";
+					}
+
+					@Override
+					public boolean accept(File file) {
+						// TODO Auto-generated method stub
+						if (file.isDirectory()) {
+							return true;
+						}
+						if (file.getName().contains(".tmp")) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				};
+				fc.setFileFilter(filter);
 				int returnVal = fc.showOpenDialog(Interface2.this);
-		        if (returnVal == JFileChooser.APPROVE_OPTION) {
-		        	 File file = fc.getSelectedFile();
-		        	 model.openFile(file);
-		        	 map = Model2.getMap();
-		        }
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					if (model.openFile(file)) {
+						map = Model2.getMap();
+						objectsInMap = map.keys();
+						exit=0;
+						enemy=0;
+						while(objectsInMap.hasMoreElements()){
+							@SuppressWarnings("unchecked")
+							List<Integer> souradnice = (List<Integer>) objectsInMap
+									.nextElement();
+							if(map.get(souradnice).equals("!")){
+								exit+=1;
+							}
+							if(map.get(souradnice).equals("E")){
+								enemy+=1;
+							}
+						}
+					} else {
+						JOptionPane.showMessageDialog(null,
+								"Error: File not found!", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}
+
 			}
 			if (e.getActionCommand().equals("Exportovat")) {
-				
+				fc.removeChoosableFileFilter(filter);
+				fc.validate();
+				filter = new FileFilter() {
+
+					@Override
+					public String getDescription() {
+						// TODO Auto-generated method stub
+						return "Text file (.txt)";
+					}
+
+					@Override
+					public boolean accept(File file) {
+						// TODO Auto-generated method stub
+						if (file.isDirectory()) {
+							return true;
+						}
+						if (file.getName().contains(".txt")) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				};
+				fc.setFileFilter(filter);
+				int returnVal = fc.showSaveDialog(Interface2.this);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					model.exportMap(file);
+				}
 			}
 		} catch (Exception ex) {
 

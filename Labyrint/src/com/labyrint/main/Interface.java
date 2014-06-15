@@ -12,9 +12,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 import straightedge.geom.vision.VisionData;
 
@@ -41,6 +43,8 @@ public class Interface extends JPanel implements ActionListener, Runnable {
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private static boolean start = false;
 	private static boolean pause = false;
+	private JFileChooser fc;
+	private FileFilter filter;
 	JButton dale = new JButton("Pokraèovat");
 	JButton newGame = new JButton("Nová hra");
 	JButton editor = new JButton("Editor map");
@@ -71,6 +75,8 @@ public class Interface extends JPanel implements ActionListener, Runnable {
 		player = Model.getPlayer();
 		live = new Lives();
 		model = new Model();
+		fc = new JFileChooser();
+		fc.setAcceptAllFileFilterUsed(false);
 	}
 
 	public void paint(Graphics g) {
@@ -287,7 +293,41 @@ public class Interface extends JPanel implements ActionListener, Runnable {
 				pause = false;
 			}
 			if (e.getActionCommand().equals("Hrát vytvoøené mapy")) {
-				System.out.println("TADY NIC NENI!");
+				fc.removeChoosableFileFilter(filter);
+				fc.validate();
+				filter = new FileFilter() {
+
+					@Override
+					public String getDescription() {
+						// TODO Auto-generated method stub
+						return "Text file (.txt)";
+					}
+
+					@Override
+					public boolean accept(File file) {
+						// TODO Auto-generated method stub
+						if (file.isDirectory()) {
+							return true;
+						}
+						if (file.getName().contains(".txt")) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				};
+				fc.setFileFilter(filter);
+				count += 1;
+				if (count == 1) {
+					int returnVal = fc.showOpenDialog(Interface.this);
+					if (returnVal == JFileChooser.APPROVE_OPTION) {
+						File file = fc.getSelectedFile();
+						model.openCustomMap(file);
+					}
+					start = true;
+					pause = false;
+					chooseMap = false;
+				}
 			}
 		} catch (Exception er) {
 		}

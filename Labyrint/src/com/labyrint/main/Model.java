@@ -1,6 +1,9 @@
 package com.labyrint.main;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -67,7 +70,24 @@ public class Model {
 			}
 		}
 	}
-
+	
+	public void openCustomMap(File file){
+		FileInputStream fis;
+		Reader in;
+		try {
+			fis = new FileInputStream(file);
+			in = new InputStreamReader(fis);
+			br = new BufferedReader(in);
+			while ((line = br.readLine()) != null) {
+				lines.add(line);
+			}
+			initLevel();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void playerDead() {
 		lives -= 1;
 		player.setX(33);
